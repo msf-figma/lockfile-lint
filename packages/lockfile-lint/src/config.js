@@ -22,6 +22,7 @@ module.exports = (argv, exitProcess = false, searchFrom = process.cwd()) => {
     )
   }
 
+  // TODO maybe add an option for non-github, but with github as the default
   return yargs(argv)
     .version()
     .config(fileConfig)
@@ -74,6 +75,12 @@ module.exports = (argv, exitProcess = false, searchFrom = process.cwd()) => {
         alias: ['allowed-urls'],
         type: 'array',
         describe: 'validates a whitelist of allowed URLs to be used for resources in the lockfile'
+      },
+      g: {
+        alias: ['validate-internal-ssh-external-https'],
+        type: 'string',
+        describe:
+          'validates that internal (github.com under the provided org) resources use the git+ssh protocol, and that everything else uses the https protocol'
       }
     })
     .example('lockfile-lint --path yarn.lock --validate-https')
@@ -81,6 +88,7 @@ module.exports = (argv, exitProcess = false, searchFrom = process.cwd()) => {
     .example(
       'lockfile-lint --path yarn.lock --allowed-schemes "https:" "git+ssh:" --allowed-hosts npm yarn verdaccio'
     )
+    .example('lockfile-lint --path yarn.lock --validate-internal-ssh-external-https figma')
     .epilogue('curated by Liran Tal at https://github.com/lirantal/lockfile-lint')
     .detectLocale(false)
     .exitProcess(exitProcess).argv

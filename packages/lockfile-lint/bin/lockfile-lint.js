@@ -40,6 +40,7 @@ let validators = []
 const supportedValidators = new Map([
   ['allowed-hosts', 'validateHosts'],
   ['validate-https', 'validateHttps'],
+  ['validate-internal-ssh-external-https', 'validateInternalSshExternalHttps'],
   ['validate-package-names', 'ValidatePackageNames'],
   ['allowed-schemes', 'validateSchemes'],
   ['allowed-urls', 'validateUrls']

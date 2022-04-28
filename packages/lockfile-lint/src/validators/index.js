@@ -6,7 +6,8 @@ const {
   ValidateHttps,
   ValidatePackageNames,
   ValidateScheme,
-  ValidateUrl
+  ValidateUrl,
+  ValidateInternalSshExternalHttps
 } = require('lockfile-lint-api')
 const debug = require('debug')('lockfile-lint')
 
@@ -15,7 +16,25 @@ module.exports = {
   ValidateHttpsManager,
   ValidatePackageNamesManager,
   ValidateSchemeManager,
-  ValidateUrlManager
+  ValidateUrlManager,
+  ValidateInternalSshExternalHttpsManager
+}
+
+function ValidateInternalSshExternalHttpsManager ({path, type, validatorValues, validatorOptions}) {
+  debug(
+    `validate-scheme-manager invoked with validator options: ${JSON.stringify(validatorValues)}`
+  )
+
+  const options = {
+    lockfilePath: path,
+    lockfileType: type
+  }
+
+  const parser = new ParseLockfile(options)
+  const lockfile = parser.parseSync()
+  const validator = new ValidateInternalSshExternalHttps({packages: lockfile.object})
+
+  return validator.validate(validatorValues, validatorOptions)
 }
 
 function ValidateSchemeManager ({path, type, validatorValues, validatorOptions}) {
