@@ -3,7 +3,6 @@
 const {URL} = require('url')
 const debug = require('debug')('lockfile-lint-api')
 
-// TODO make these configurable
 const GITHUB_HOST = 'github.com'
 
 const GITSSH_PROTOCOL = 'git+ssh:'
@@ -25,6 +24,8 @@ module.exports = class ValidateInternalSshExternalHttps {
       errors: []
     }
 
+    const internalHost = options['internal-repo-host'] || GITHUB_HOST
+
     for (const [packageName, packageMetadata] of Object.entries(this.packages)) {
       if (!('resolved' in packageMetadata)) {
         continue
@@ -35,9 +36,9 @@ module.exports = class ValidateInternalSshExternalHttps {
       try {
         packageResolvedURL = new URL(packageMetadata.resolved)
 
-        // if github.com host and internal organization
+        // if internal host and internal organization
         if (
-          packageResolvedURL.host === GITHUB_HOST &&
+          packageResolvedURL.host === internalHost &&
           packageResolvedURL.pathname.split('/')[1] === orgName
         ) {
           // protocol must be git+ssh

@@ -81,6 +81,12 @@ module.exports = (argv, exitProcess = false, searchFrom = process.cwd()) => {
         type: 'string',
         describe:
           'validates that internal (github.com under the provided org) resources use the git+ssh protocol, and that everything else uses the https protocol'
+      },
+      i: {
+        alias: ['internal-repo-host'],
+        type: 'string',
+        describe:
+          'the hostname for packages that are considered to be internal. This configuration applies only to the --validate-internal-ssh-external-https option. If not provided, it defaults to "github.com".'
       }
     })
     .example('lockfile-lint --path yarn.lock --validate-https')
